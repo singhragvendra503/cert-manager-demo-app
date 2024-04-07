@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  name: cert-demo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cert-demo.cheemes.online
+    http:
+      paths:
+      - backend:
+          service:
+            name: cert-demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cert-demo.cheemes.online
+    secretName: demo-app-tls
+
